@@ -5,19 +5,73 @@
 #include "worm.h"
 
 size_t g_nthreads = 4;
+/*
+void queue(**int queue, int currentLength, int id){
+	queue[currentLength] = id;
+}
+*/
 
 // Returns result set containing book with given id.
 result_t* find_book(book_t* nodes, size_t count, size_t book_id) {
 
-	// TODO
-	return NULL;
+	/*
+	//Casting
+	int numBooks = (int) count;
+
+	//Initialise queue
+	int* queue = malloc(numBooks * sizeof(int));
+	int currentQueueLength = 0;
+
+	//Initialise visited
+	int* visited = malloc(numBooks * sizeof(int));
+	int currentedVisitedLength;
+
+	*/
+
+	book_t ** element = (book_t**) malloc(sizeof(book_t));
+	result_t *result = (result_t*) malloc(sizeof(result_t));
+
+	for(int i = 0; i < count; i++){
+		if (nodes[i].id == book_id){
+			element[0] = &nodes[i];
+			result->n_elements = 1;
+			result->elements = element;
+			break;
+		}
+	}
+
+
+	/*
+	free(queue);
+	free(visited);
+	*/
+
+	return result;
 }
 
 // Returns result set containing books by given author.
 result_t* find_books_by_author(book_t* nodes, size_t count, size_t author_id) {
 
-	// TODO
-	return NULL;
+	book_t ** booklist = (book_t**) malloc(sizeof(book_t) * count);
+	result_t *result = (result_t*) malloc(sizeof(result_t));
+
+	for(int i = 0; i < count; i++){
+		if (nodes[i].author_id == author_id){
+			booklist[0] = &nodes[i];
+			result->n_elements = 1;
+			break;
+		}
+	}
+
+	if(booklist[0]){
+		for(int i = 0; i < booklist[0]->n_author_edges; i++){
+			booklist[i+1] = &nodes[booklist[0]->b_author_edges[i]];
+			result->n_elements = result->n_elements += 1;
+		}
+	}
+	result->elements = booklist;
+
+	return result;
 }
 
 // Returns result set containing books that have been reprinted by a different publisher.
@@ -47,4 +101,3 @@ result_t* find_shortest_edge_type(book_t* nodes, size_t count, size_t a1_id, siz
 	// TODO
 	return NULL;
 }
-
