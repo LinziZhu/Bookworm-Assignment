@@ -170,6 +170,37 @@ void test_sample(book_t* graph, size_t count) {
 			fprintf(stderr, "Fail! find_books_by_author() => result set contains %zu incorrect elements.\n", 5 - find_count);
 		}
 	}
+
+	result_t* r3 = find_books_reprinted(graph, count, 1);
+	if (r3 == NULL) {
+		fprintf(stderr, "Fail! find_books_reprinted() => result set is NULL.\n");
+	} else if (r3->n_elements != 5) {
+		fprintf(stderr, "Fail! find_books_reprinted() => result set contains %zu elements.\n", r3->n_elements);
+	} else {
+		size_t find_count = 0;
+		size_t book_ids[] = {0, 4, 6, 11, 15};
+		for (size_t i = 0; i < 5; i++) {
+			for (size_t j = 0; j < 5; j++) {
+				if (r3->elements[i]->id == book_ids[j]) {
+					find_count += 1;
+					book_ids[j] = -1;
+					break;
+				}
+			}
+		}
+		if (find_count != 5) {
+			fprintf(stderr, "Fail! find_books_reprinted() => result set contains %zu incorrect elements.\n", 5 - find_count);
+		}
+	}
+
+	if(r3 != NULL) {
+		if(r3->elements != NULL) {
+			free(r3->elements);
+		}
+		free(r3);
+	}
+
+
 	if(r2 != NULL) {
 		if(r2->elements != NULL) {
 			free(r2->elements);
